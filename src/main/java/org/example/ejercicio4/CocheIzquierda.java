@@ -13,19 +13,20 @@ public class CocheIzquierda implements Runnable {
         try {
 
             synchronized (puente) {
+                // Comprobamos si podemos pasar
                 while (!puente.puedeEntrarIzquierda()) {
-                    System.out.println("Un coche esperando por la izquierda");
-                    this.puente.wait();
+                    //System.out.println("Coche esperando por la izquierda");
+                    this.puente.wait(); // Hay coches en sentido contrario, por lo que esperamos.
                 }
 
-                puente.entraI();
+                puente.entraI(); // Notificamos al puente que hemos entrado
             }
 
-            esperar(1000);
+            esperar(1000); // Tiempo en pasar por el puente
 
             synchronized (puente) {
-                puente.saleD();
-                puente.notifyAll();
+                puente.saleD(); // Notificamos al puente que salimos
+                puente.notifyAll(); // Notificamos al resto de hilos para ver si pueden acceder
             }
 
         } catch (InterruptedException e) {
